@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 require_once('db/dbhelper.php');
 $sql = "SELECT * FROM product_category";
 $product_categories = executeResult($sql);
@@ -36,28 +37,17 @@ $product = executeResult($sql2);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/assets/css/font-awesome.min.css">
 
     <style>
-        .logo-section .logo-item {
-
-            height: auto !important;
-            opacity: 1 !important;
-
+        .inner-header .header-right {
+            float: right;
+            line-height: 42px;
         }
 
-        .logo-section h2 {
-            text-align: Center;
-            color: #1e1e1e;
-            font-size: 60px;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
 
-        ::selection {
-            background: #2a2a2a;
-            color: #fff;
-        }
-
-        .error {
-            color: red;
+        .inner-header .header-right a {
+            display: inline-block;
+            position: relative;
+            color: #333;
+            letter-spacing: 4px;
         }
 
         .tab-content {
@@ -118,18 +108,7 @@ $product = executeResult($sql2);
         }
 
         .single-product-item figure img.product-image {
-            height: 30vh;
-        }
-
-        .header-section {
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-
-
-        .inner-header .main-menu ul li .sub-menu {
-            height: 30vh;
+            height: 288.5px;
         }
 
         .pro-quantity {
@@ -313,37 +292,7 @@ $product = executeResult($sql2);
             content: "";
         }
 
-        .inner-header .header-right .main-menu ul li {
-            margin-left: 23px;
-        }
 
-        .inner-header .header-right .main-menu {
-            margin-right: 150px;
-        }
-
-        .inner-header .header-right .main-menu ul li .sub-menu {
-            text-align: Center;
-            height: 15vh;
-        }
-
-        .inner-header .header-right .main-menu ul li .sub-menu button.details {
-            background-color: #333;
-            margin-bottom: 20px;
-        }
-
-        .inner-header .header-right .main-menu ul li .sub-menu button.details a {
-            color: white;
-        }
-
-
-        .inner-header .header-right .main-menu ul li .sub-menu button.out {
-            background-color: #fff;
-            padding: 0 30px;
-        }
-
-        .inner-header .header-right .main-menu ul li .sub-menu button.out a {
-            color: #333;
-        }
 
 
 
@@ -468,84 +417,25 @@ $product = executeResult($sql2);
             height: 50px;
         }
 
-        section.thanks {
-            margin: 120px 0;
-        }
-
-        .contact-details a {
-            color: #333;
-            text-decoration: none;
-        }
-
-        /* Styles for the pop-up */
-        .popup {
-            translate: .5s;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            display: none;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            
-        }
-
-        .popup.show {
-            opacity: 1;
-                visibility: visible;
-        }
-
-        .popup-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            display: flex;
-            width: 500px;
-            height: 300px;
+        span.amount-cart {
+            font-size: 12px;
+            color: #1e1e1e;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d0d7db;
+            background: #fff;
+            display: inline-block;
+            line-height: 15px;
             text-align: center;
-            align-items: stretch;
-            flex-direction: column;
-            justify-content: center;
+            border-radius: 50%;
+            font-weight: 600;
+            position: absolute;
+            left: -9px;
+            top: 14px;
         }
 
-        .popup-buttons {
-            margin-top: 20px;
-        }
-
-        .confirm-btn,
-        .cancel-btn {
-            background: #333;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-        }
-
-        .confirm-btn:hover,
-        .cancel-btn:hover {
-            background-color: transparent;
-            color: #333;
-            transition: .5s;
-        }
-
-
-
-
-        .cancel-btn:active,
-        .confirm-btn:active {
-            border: none;
-        }
-
-        /* Show the pop-up */
-        .popup.show {
-            display: flex;
+        a.out:hover {
+            border-bottom: 1px solid #333;
         }
     </style>
 </head>
@@ -571,13 +461,10 @@ $product = executeResult($sql2);
         <div class="container-fluid">
             <div class="inner-header">
                 <div class="logo">
-                    <a href="./index.php"><img src="image/logo.png" alt=""></a>
+                    <a href="./index.php"><img src="assets/img/logo.png" alt=""></a>
                 </div>
+
                 <?php
-
-                // Kiểm tra sự tồn tại của session email hoặc username
-
-
                 if (isset($_SESSION['user'])) {
                     $c_id = $_SESSION['user'];
                     $email = $c_id['email'];
@@ -588,86 +475,57 @@ $product = executeResult($sql2);
                             unset($_SESSION['token']);
                             unset($_SESSION['user']);
                             echo '<script>
-                // Kiểm tra xem pop-up đã được hiển thị trước đó hay chưa
-                if (!localStorage.getItem("popupDisplayed")) {
-                    // Hiển thị pop-up
-                    var popup = document.createElement("div");
-                    popup.id = "popup";
-                    popup.innerHTML = "<div class=\"popup-content\"><h3>Tài khoản của bạn đang được sử dụng bởi người khác.</h3><p>Vui lòng đăng nhập lại để đảm bảo an toàn tài khoản.</p></div>";
-                    document.body.appendChild(popup);
+                                            if (!localStorage.getItem("popupDisplayed")) {
+                                                var popup = document.createElement("div");
+                                                popup.id = "popup";
+                                                popup.innerHTML = "<div class=\"popup-content-2\"><h3>Tài khoản của bạn đang được sử dụng bởi người khác.</h3><p>Vui lòng đăng nhập lại để đảm bảo an toàn tài khoản.</p></div>";
+                                                document.body.appendChild(popup);
 
-                    // Đóng pop-up khi người dùng nhấp vào nút "Đăng nhập lại" hoặc bất kỳ vị trí nào bên ngoài pop-up
-                    popup.addEventListener("click", function(e) {
-                        if (e.target.id === "popup" || e.target.className === "popup-content") {
-                            document.body.removeChild(popup);
-                            localStorage.removeItem("popupDisplayed");
-                            window.location.href = "signin.php";
-                        }
-                    });
+                                                // Đóng pop-up khi người dùng nhấp vào nút "Đăng nhập lại" hoặc bất kỳ vị trí nào bên ngoài pop-up
+                                                popup.addEventListener("click", function(e) {
+                                                    if (e.target.id === "popup" || e.target.className === "popup-content-2") {
+                                                        document.body.removeChild(popup);
+                                                        localStorage.removeItem("popupDisplayed");
+                                                        window.location.href = "signin.php";
+                                                    }
+                                                });
 
-                    // Lưu trạng thái đã hiển thị pop-up vào localStorage
-                    localStorage.setItem("popupDisplayed", true);
-                }
-            </script>';
+                                                // Lưu trạng thái đã hiển thị pop-up vào localStorage
+                                                localStorage.setItem("popupDisplayed", true);
+                                            }
+                                    </script>';
                         }
                     }
-                    // Hiển thị phần header-right
-                ?>
-                    <div class="header-right">
-                        <div class="main-menu mobile-menu">
-                            <ul>
-                                <li>
-                                    <img src="assets/img/icons/search.png" alt="" class="search-trigger">
-                                </li>
-
-
-
-                                <li><?php echo $c_id['username'] ?></li>
-
-                                <li>
-                                    <a href="./details.php"><img src="assets/img/icons/man.png" alt="">
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li><button class="details"><a href="./details.php">My account</a></button></li>
-                                        <li><button class="out"><a href="./logout.php">Log out</a></button></li>
-
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="shopping-cart.php">
-                                        <img src="assets/img/icons/bag.png" alt="">
-                                        <?php
-                                        $username = $c_id['username'];
-                                        $email = $c_id['email'];
-                                        $cart = "SELECT count(pid) as amount FROM cart WHERE c_id = '$email' or c_id = '$username' ";
-                                        $count_cart = executeSingleResult($cart);
-
-                                        ?>
-                                        <span>
-                                            <?php echo $count_cart['amount']; ?>
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
-
+                    echo '
+                        <div class="user-access">
+                            <img src="assets/img/icons/search.png" style="margin-right: 15px" alt="" class="search-trigger">
+                            <a href="details.php"><img src="assets/img/icons/man.png" style="margin-right: 15px" alt=""></a>
+                            <a href="#" style="margin-right: 15px">
+                                <img src="assets/img/icons/bag.png" alt="">
+                                    <span class="amount-cart">2</span>
+                            </a>
+                            <a style="margin-right:15px;">' . $_SESSION['c_username_email']['username'] . '</a>
+                            <a href="logout.php" class="out">Log Out</a>
                         </div>
-
-                    </div>
-                <?php
+                        ';
                 } else {
-                ?>
+                    echo '
+                    
                     <div class="user-access">
-                        <img src="assets/img/icons/search.png" style="margin-right:30px;" alt="" class="search-trigger">
-                        <a href="register.php">Register</a>
-                        <a href="signin.php" class="in">Sign in</a>
-                    </div>
-                <?php
+                    <img src="assets/img/icons/search.png" style="margin-right: 15px" alt="" class="search-trigger">
+                    <a href="register.php">Register</a>
+                    <a href="signin.php" class="in">Sign in</a>
+                </div>
+                    
+                    ';
                 }
                 ?>
+
                 <nav class="main-menu mobile-menu">
                     <ul>
                         <li><a class="active" href="./index.php">Home</a></li>
                         <li><a href="./categories.php">Shop</a>
+
                             <ul class="sub-menu">
                                 <?php
                                 foreach ($product as $p) {
@@ -677,8 +535,7 @@ $product = executeResult($sql2);
                                 }
 
                                 ?>
-                            </ul>
-                            <ul class="sub-menu" style="margin-left:100px">
+                                <hr>
                                 <?php
                                 foreach ($product_categories as $c) {
                                 ?>
@@ -689,7 +546,8 @@ $product = executeResult($sql2);
                                 ?>
                             </ul>
                         </li>
-                        <li><a href="./about-us.php">About</a></li>
+                        <li><a href="./product-page.php">About</a></li>
+                        <li><a href="./check-out.php">Blog</a></li>
                         <li><a href="./contact.php">Contact</a></li>
                     </ul>
                 </nav>
